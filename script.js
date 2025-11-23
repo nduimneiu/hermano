@@ -1,31 +1,14 @@
-const productos = [
-    { marca: "Apple", nombre: "iPhone 15 Pro Max", precio: 1199.99, img: "https://i.imgur.com/u7p2QuM.jpeg"},
-    { marca: "Samsung", nombre: "Samsung Galaxy S24 Ultra", precio: 1099.99, img: "https://i.imgur.com/2yQjUQJ.jpeg"},
-    { marca: "Apple", nombre: "iPhone 15", precio: 799.99, img: "https://i.imgur.com/79zQk9J.jpeg"},
-    { marca: "Samsung", nombre: "Galaxy Z Fold 5", precio: 1699.99, img: "https://i.imgur.com/hKzClDL.jpeg"},
-    { marca: "Google", nombre: "Google Pixel 8 Pro", precio: 899.99, img: "https://i.imgur.com/Qr3r09o.jpeg"},
-    { marca: "OnePlus", nombre: "OnePlus 12", precio: 699.99, img: "https://i.imgur.com/ZlRy5P9.jpeg"}
+const frases = [
+    "El éxito es la suma de pequeños esfuerzos repetidos día tras día.",
+    "Tú puedes con mucho más de lo que imaginas.",
+    "No te rindas, lo mejor está por venir.",
+    "La disciplina vence al talento.",
+    "Haz hoy lo que tu futuro agradecerá.",
+    "Si puedes soñarlo, puedes lograrlo.",
+    "El momento perfecto es ahora."
 ];
 
-const lista = document.getElementById("listaProductos");
-const cantidad = document.getElementById("cantidad");
-
-function cargarProductos(arr) {
-    lista.innerHTML = "";
-    arr.forEach(p => {
-        lista.innerHTML += `
-            <div class="card">
-                <img src="${p.img}">
-                <div class="info">
-                    <p class="marca">${p.marca}</p>
-                    <p class="nombre">${p.nombre}</p>
-                    <p class="precio">$${p.precio}</p>
-                </div>
-            </div>
-        `;
-    });
-
-    cantidad.innerText = `${arr.length} productos disponibles`;
+function nuevaFrase() {
+    const frase = frases[Math.floor(Math.random() * frases.length)];
+    document.getElementById("frase").textContent = frase;
 }
-
-cargarProductos(productos);

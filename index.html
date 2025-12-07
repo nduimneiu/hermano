@@ -1,44 +1,163 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tienda Tech</title>
-    
-    <!-- GOOGLE ADSENSE -->
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8763788932694623"
-     crossorigin="anonymous"></script>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>JMR Asociados - Tienda en línea</title>
+  <style>
+    :root{--brand:#0a66c2;--muted:#666}
+    *{box-sizing:border-box}
+    body{font-family:Inter, system-ui, Arial, sans-serif;margin:0;color:#111}
+    header{background:linear-gradient(90deg,var(--brand),#3aa0ff);color:#fff;padding:18px 20px}
+    .container{max-width:1100px;margin:0 auto;padding:20px}
+    .nav{display:flex;gap:16px;align-items:center;justify-content:space-between}
+    .logo{font-weight:800;font-size:20px;letter-spacing:0.4px}
+    .search{flex:1;margin:0 20px}
+    .search input{width:100%;padding:10px;border-radius:8px;border:0}
+    .cart-btn{background:rgba(255,255,255,0.15);border:0;padding:10px 14px;border-radius:8px;color:#fff}
 
-    <link rel="stylesheet" href="style.css">
+    .hero{display:grid;grid-template-columns:1fr 360px;gap:24px;align-items:center;padding:28px 0}
+    .hero h1{margin:0 0 12px;font-size:34px}
+    .hero p{margin:0;color:var(--muted)}
+    .hero .hero-img{border-radius:12px;overflow:hidden}
+    .hero .hero-img img{width:100%;height:100%;object-fit:cover;display:block}
+
+    .products{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:18px;margin-top:24px}
+    .card{border:1px solid #eee;border-radius:12px;overflow:hidden;background:#fff;display:flex;flex-direction:column}
+    .card img{width:100%;height:170px;object-fit:cover}
+    .card .info{padding:12px;flex:1;display:flex;flex-direction:column}
+    .price{font-weight:700;margin-top:8px}
+    .add{margin-top:12px;padding:10px;border-radius:8px;border:0;background:var(--brand);color:#fff;cursor:pointer}
+
+    footer{border-top:1px solid #eee;padding:18px 0;margin-top:36px;color:var(--muted);font-size:14px}
+
+    @media(max-width:880px){
+      .hero{grid-template-columns:1fr}
+      .hero .hero-img{height:220px}
+    }
+  </style>
 </head>
 <body>
-
-    <!-- MODO OSCURO -->
-    <button id="toggleTheme" class="theme-btn">🌙</button>
-
-    <!-- HEADER -->
-    <header>
-        <h1>🔥 Tienda Tech</h1>
-        <p class="sub">Los mejores gadgets al mejor precio</p>
-
-        <!-- BUSCADOR -->
-        <input type="text" id="buscador" placeholder="Buscar productos...">
-    </header>
-
-    <!-- LISTA DE PRODUCTOS -->
-    <section id="productos" class="lista-productos"></section>
-
-    <!-- CARRITO -->
-    <div id="carritoBox" class="carrito-box">
-        <h2>🛒 Carrito</h2>
-        <div id="carritoLista"></div>
-        <p id="total"></p>
+  <header>
+    <div class="container nav">
+      <div style="display:flex;align-items:center;gap:12px">
+        <div class="logo">JMR Asociados</div>
+        <div style="font-size:12px;opacity:0.9">Tu tienda en línea</div>
+      </div>
+      <div class="search">
+        <input id="searchInput" placeholder="Buscar productos, marcas y más..." />
+      </div>
+      <button class="cart-btn" id="cartBtn">🛒 Carrito (<span id="cartCount">0</span>)</button>
     </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <div>
+        <h1>Bienvenido a <span style="color:var(--brand)">JMR Asociados</span></h1>
+        <p>Encuentra tecnología, accesorios y más con envío rápido. Navega por nuestras categorías y agrega tus favoritos al carrito.</p>
+        <div style="margin-top:18px">
+          <button class="add" onclick="scrollToProducts()">Ver productos</button>
+        </div>
+      </div>
+      <div class="hero-img">
+        <img src="https://source.unsplash.com/collection/190727/800x600" alt="Hero tienda" />
+      </div>
+    </section>
+
+    <section>
+      <h2 style="margin:10px 0">Productos destacados</h2>
+      <div class="products" id="products">
+      </div>
+    </section>
 
     <footer>
-        <p>© 2025 Tienda Tech • Todos los derechos reservados</p>
+      <div class="container">© <span id="year"></span> JMR Asociados · Hecho con ❤️</div>
     </footer>
+  </main>
 
-    <script src="script.js"></script>
+  <script>
+    
+    const productos = [
+      {
+        id: 1,
+        titulo: 'Laptop moderna',
+        precio: 829.99,
+        img: 'https://c.pxhere.com/photos/5f/7e/apple_computer_notebook_technology_laptop_screen_electronics_publicdomain-103006.jpg!d'
+      },
+      {
+        id: 2,
+        titulo: 'Smartphone elegante',
+        precio: 499.99,
+        img: 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9'
+      },
+      {
+        id: 3,
+        titulo: 'Auriculares Bluetooth',
+        precio: 79.99,
+        img: 'https://images.unsplash.com/photo-1580894732444-8ecded7900cd'
+      },
+      {
+        id: 4,
+        titulo: 'Smartwatch moderno',
+        precio: 199.99,
+        img: 'https://c.pxhere.com/photos/22/5b/ipod_ipod_nano_apple_nano_headphones_mp3_music_in_ears-789663.jpg!d'
+      },
+      {
+        id: 5,
+        titulo: 'Cámara deportiva 4K',
+        precio: 149.99,
+        img: 'https://c.pxhere.com/photos/c2/ca/music_on_your_smartphone_spotify_music_service_music_online_listening_to_music_smartphone_headphones_laptop-349089.jpg!d'
+      },
+      {
+        id: 6,
+        titulo: 'Teclado mecánico',
+        precio: 69.99,
+        img: 'https://c.pxhere.com/photos/11/61/smartphone_notebook_social_media_twitter_facebook_instagram_internet_web-794069.jpg!d'
+      }
+    ];
+
+    const productsEl = document.getElementById('products');
+    const cartCountEl = document.getElementById('cartCount');
+    const yearEl = document.getElementById('year');
+    yearEl.textContent = new Date().getFullYear();
+
+    let cart = [];
+
+    function renderProducts(list){
+      productsEl.innerHTML = '';
+      list.forEach(p=>{
+        const card = document.createElement('div'); 
+        card.className='card';
+        card.innerHTML = `
+          <img src="${p.img}" alt="${p.titulo}">
+          <div class="info">
+            <div style="font-weight:600">${p.titulo}</div>
+            <div style="font-size:13px;color:var(--muted)">En stock</div>
+            <div class="price">$${p.precio.toFixed(2)}</div>
+            <button class="add" onclick="addToCart(${p.id})">Agregar al carrito</button>
+          </div>
+        `;
+        productsEl.appendChild(card);
+      })
+    }
+
+    function addToCart(id){
+      const prod = productos.find(p=>p.id===id);
+      if(!prod) return;
+      cart.push(prod);
+      cartCountEl.textContent = cart.length;
+      alert(`${prod.titulo} agregado al carrito`);
+    }
+
+    document.getElementById('searchInput').addEventListener('input', (e)=>{
+      const q = e.target.value.toLowerCase().trim();
+      if(!q) renderProducts(productos);
+      else renderProducts(productos.filter(p=>p.titulo.toLowerCase().includes(q)));
+    });
+
+    renderProducts(productos);
+  </script>
+
 </body>
 </html>
